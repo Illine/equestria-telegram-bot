@@ -1,0 +1,43 @@
+telegram:
+  bot:
+    token: ${TELEGRAM_BOT_TOKEN}
+    allowed-users: ${TELEGRAM_BOT_ALLOWED_USERS}
+    log-level: ${TELEGRAM_BOT_LOG_LEVEL:network_basic}
+    timeout-in-sec: ${TELEGRAM_BOT_TIMEOUT_IN_SEC:120}
+
+openai:
+  token: ${OPEN_AI_TOKEN}
+  model: gpt-3.5-turbo
+  temperature: ${OPEN_AI_TEMPERATURE:0.5}
+  timeout-in-sec: ${OPEN_AI_TIMEOUT_IN_SEC:120}
+  max-idle-connections: ${OPEN_AI_MAX_IDLE_CONNECTIONS:5}
+  keep-alive-duration: ${OPEN_AI_KEEP_ALIVE_DURATION:1}
+  time-unit: ${OPEN_AI_TIME_UNIT:seconds}
+  answer-history-count: ${OPEN_AI_ANSWER_HISTORY:5}
+
+messages:
+  bot-start: "Привет!\n\nЭтот бот открывает вас доступ к продукту *OpenAI: Completions*.\n\nБот использует ту же модель (${openai.model}), что и ChatGPT.\n\nДанный бот умеет только отправлять текстовые запросы пользователя к OpenAI и пересылать полученный ответ обратно. \n\n*Любые сообщения кроме текстовых запрещены!*"
+  access-error: "Вам запрещено пользоваться ботом!"
+  openai-error: "Ошибка обработки запроса на стороне OpenAI. Попробуйте позднее."
+  telegram-error: "Ошибки обработки запроса на стороне Telegram."
+  wrong-message-type-error: "Этот бот поддерживает только текстовые сообщения и команды!"
+  repeat-command-error: "Вы ещё не задавали вопросы!"
+  unknown-command: "Неизвестная команда!"
+  clear-command: "История OpenAI очищена для текущего чата."
+  start-command-description: "Информация о бота"
+  clear-command-description: "Очищает контекст OpenAI"
+  version-command-description: "Версия бота"
+  repeat-command-description: "Повторяет предыдущий вопрос к OpenAI"
+
+logbook:
+  strategy: body-only-if-status-at-least
+  minimum-status: ${LOGBOOK_MINIMUM_STATUS:400}
+  format:
+    style: http
+  logger:
+    name: REST
+
+version:
+  file-name: "version.properties"
+  property-name: "version"
+  description: "Текущая версия бота"
