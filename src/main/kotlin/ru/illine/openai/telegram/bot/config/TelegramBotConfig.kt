@@ -13,7 +13,7 @@ import java.util.concurrent.ConcurrentHashMap
 class TelegramBotConfig {
 
     @Bean
-    fun chatToTelegramMessage() = ConcurrentHashMap<Long, String>()
+    fun chatToTelegramMessage() = ConcurrentHashMap<Long, Pair<String, Long>>()
 
     @Bean(destroyMethod = "stopPolling")
     fun bot(properties: TelegramBotProperties, telegramBotService: TelegramBotService): Bot {

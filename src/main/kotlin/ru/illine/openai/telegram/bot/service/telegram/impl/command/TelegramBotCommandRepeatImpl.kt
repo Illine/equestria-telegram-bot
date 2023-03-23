@@ -24,15 +24,15 @@ class TelegramBotCommandRepeatImpl(
 
     override fun executeCommand(dispatcher: Dispatcher) {
         dispatcher.command(getCommand().command) {
-            val chatId = message.chat.id
+            val chatId = update.message!!.chat.id
             answerQuestionFacade
-                .getLastTelegramUserMessage(update.message!!.chat.id)
+                .getLastTelegramUserMessage(chatId)
                 ?.let {
-                    val question = answerQuestionFacade.buildOpenAIQuestion(it, chatId)
-                    answerQuestionFacade.saveLastTelegramUserMessage(message.text!!, chatId)
+                    val lastTelegramUserMessageId = it.second
+                    val question = answerQuestionFacade.buildOpenAIQuestion(it.first, chatId)
                     openAIService.chat(question).forEach {
                         handlerToService.get(TelegramHandlerType.OPEN_AI)!!
-                            .sendMessage(this.bot, chatId, it)
+                            .sendMessage(this.bot, chatId, it, lastTelegramUserMessageId)
                     }
                 }
                 ?: run {

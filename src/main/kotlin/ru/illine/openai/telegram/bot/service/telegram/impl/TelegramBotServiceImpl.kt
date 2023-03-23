@@ -44,10 +44,11 @@ class TelegramBotServiceImpl(
     override fun message(dispatcher: Dispatcher) {
         dispatcher.message(telegramBotFilterService.messageUserFilter()) {
             val chatId = message.chat.id
+            val messageId = message.messageId
             val question = answerQuestionFacade.buildOpenAIQuestion(message.text!!, chatId)
-            answerQuestionFacade.saveLastTelegramUserMessage(message.text!!, chatId)
+            answerQuestionFacade.saveLastTelegramUserMessage(message.text!!, chatId, messageId)
             openAIService.chat(question).forEach {
-                handlerToService.get(TelegramHandlerType.OPEN_AI)!!.sendMessage(this.bot, chatId, it)
+                handlerToService.get(TelegramHandlerType.OPEN_AI)!!.sendMessage(this.bot, chatId, it, messageId)
             }
         }
     }

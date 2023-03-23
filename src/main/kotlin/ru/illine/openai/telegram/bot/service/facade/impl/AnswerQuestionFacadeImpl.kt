@@ -23,7 +23,7 @@ class AnswerQuestionFacadeImpl(
 
     override fun getLastTelegramUserMessage(chatId: Long) = telegramQuestionService.getLastUserMessage(chatId)
 
-    override fun saveLastTelegramUserMessage(message: String, chatId: Long) {
-        telegramQuestionService.saveLastUserMessage(message, chatId)
+    override fun saveLastTelegramUserMessage(message: String, chatId: Long, messageId: Long) {
+        telegramQuestionService.saveLastUserMessage(chatId, message to messageId)
     }
 }

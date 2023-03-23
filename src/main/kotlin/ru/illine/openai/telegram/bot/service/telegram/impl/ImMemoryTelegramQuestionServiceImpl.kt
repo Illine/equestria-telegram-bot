@@ -6,12 +6,12 @@ import java.util.concurrent.ConcurrentHashMap
 
 @Service
 class ImMemoryTelegramQuestionServiceImpl(
-    private val chatToTelegramMessage: ConcurrentHashMap<Long, String>
+    private val chatToTelegramMessage: ConcurrentHashMap<Long, Pair<String, Long>>
 ) : TelegramQuestionService {
 
     override fun getLastUserMessage(chatId: Long) = chatToTelegramMessage.get(chatId)
 
-    override fun saveLastUserMessage(message: String, chatId: Long) {
-        chatToTelegramMessage.put(chatId, message)
+    override fun saveLastUserMessage(chatId: Long, messageToMessageId: Pair<String, Long>) {
+        chatToTelegramMessage.put(chatId, messageToMessageId)
     }
 }

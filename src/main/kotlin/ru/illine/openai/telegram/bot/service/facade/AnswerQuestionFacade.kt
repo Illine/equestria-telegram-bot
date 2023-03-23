@@ -8,7 +8,7 @@ interface AnswerQuestionFacade {
 
     fun clearOpenAIAnswerHistory(chatId: Long)
 
-    fun getLastTelegramUserMessage(chatId: Long): String?
+    fun getLastTelegramUserMessage(chatId: Long): Pair<String, Long>?
 
-    fun saveLastTelegramUserMessage(message: String, chatId: Long)
+    fun saveLastTelegramUserMessage(message: String, chatId: Long, messageId: Long)
 }

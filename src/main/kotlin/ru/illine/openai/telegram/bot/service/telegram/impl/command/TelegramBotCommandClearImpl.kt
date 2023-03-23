@@ -20,7 +20,11 @@ class TelegramBotCommandClearImpl(
         dispatcher.command(getCommand().command) {
             val chatId = update.message!!.chat.id
             openAIAnswerService.clearAnswerHistory(chatId)
-            defaultTelegramMessageHandler.sendMessage(bot, chatId, messagesProperties.clearCommand)
+            defaultTelegramMessageHandler.sendMessage(
+                bot = bot,
+                chatId = chatId,
+                message = messagesProperties.clearCommand
+            )
         }
     }
 

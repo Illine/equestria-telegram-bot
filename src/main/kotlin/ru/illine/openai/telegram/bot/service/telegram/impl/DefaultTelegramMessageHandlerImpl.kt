@@ -16,11 +16,12 @@ class DefaultTelegramMessageHandlerImpl(
 
     private val log = LoggerFactory.getLogger("SERVICE")
 
-    override fun sendMessage(bot: Bot, chatId: Long, message: String) {
+    override fun sendMessage(bot: Bot, chatId: Long, message: String, sourceMessageId: Long?) {
         bot.sendMessage(
             chatId = ChatId.fromId(chatId),
             text = message,
-            parseMode = ParseMode.MARKDOWN
+            parseMode = ParseMode.MARKDOWN,
+            replyToMessageId = sourceMessageId
         ).fold(
             ifSuccess = {
                 log.debug("An answer has sent to Telegram successfully")

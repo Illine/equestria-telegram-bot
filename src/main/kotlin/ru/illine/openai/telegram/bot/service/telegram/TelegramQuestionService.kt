@@ -2,7 +2,7 @@ package ru.illine.openai.telegram.bot.service.telegram
 
 interface TelegramQuestionService {
 
-    fun getLastUserMessage(chatId: Long): String?
+    fun getLastUserMessage(chatId: Long): Pair<String, Long>?
 
-    fun saveLastUserMessage(message: String, chatId: Long)
+    fun saveLastUserMessage(chatId: Long, messageToMessageId: Pair<String, Long>)
 }
