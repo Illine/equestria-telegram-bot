@@ -41,3 +41,6 @@ version:
   file-name: "version.properties"
   property-name: "version"
   description: "Текущая версия бота"
+
+async:
+  open-ai-thread-count: ${OPEN_AI_THREAD_COUNT:3}

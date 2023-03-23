@@ -2,6 +2,8 @@ package ru.illine.openai.telegram.bot.service.telegram.impl.command
 
 import com.github.kotlintelegrambot.dispatcher.Dispatcher
 import com.github.kotlintelegrambot.dispatcher.command
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 import org.springframework.stereotype.Service
 import ru.illine.openai.telegram.bot.config.property.MessagesProperties
 import ru.illine.openai.telegram.bot.model.type.TelegramBotCommandType
@@ -16,7 +18,8 @@ class TelegramBotCommandRepeatImpl(
     private val messagesProperties: MessagesProperties,
     private val openAIService: OpenAIService,
     private val answerQuestionFacade: AnswerQuestionFacade,
-    private val telegramMessageHandlers: Set<TelegramMessageHandler>
+    private val telegramMessageHandlers: Set<TelegramMessageHandler>,
+    private val openAICCoroutineScope: CoroutineScope
 ) : TelegramBotCommandService {
 
     private val handlerToService: Map<TelegramHandlerType, TelegramMessageHandler>
@@ -24,21 +27,24 @@ class TelegramBotCommandRepeatImpl(
 
     override fun executeCommand(dispatcher: Dispatcher) {
         dispatcher.command(getCommand().command) {
-            val chatId = update.message!!.chat.id
-            answerQuestionFacade
-                .getLastTelegramUserMessage(chatId)
-                ?.let {
-                    val lastTelegramUserMessageId = it.second
-                    val question = answerQuestionFacade.buildOpenAIQuestion(it.first, chatId)
-                    openAIService.chat(question).forEach {
-                        handlerToService.get(TelegramHandlerType.OPEN_AI)!!
-                            .sendMessage(this.bot, chatId, it, lastTelegramUserMessageId)
+            val handler = this
+            openAICCoroutineScope.launch {
+                val chatId = update.message!!.chat.id
+                answerQuestionFacade
+                    .getLastTelegramUserMessage(chatId)
+                    ?.let {
+                        val lastTelegramUserMessageId = it.second
+                        val question = answerQuestionFacade.buildOpenAIQuestion(it.first, chatId)
+                        openAIService.chat(question).forEach {
+                            handlerToService.get(TelegramHandlerType.OPEN_AI)!!
+                                .sendMessage(handler.bot, chatId, it, lastTelegramUserMessageId)
+                        }
                     }
-                }
-                ?: run {
-                    handlerToService.get(TelegramHandlerType.DEFAULT)!!
-                        .sendMessage(this.bot, chatId, messagesProperties.repeatCommandError)
-                }
+                    ?: run {
+                        handlerToService.get(TelegramHandlerType.DEFAULT)!!
+                            .sendMessage(handler.bot, chatId, messagesProperties.repeatCommandError)
+                    }
+            }
         }
     }
 

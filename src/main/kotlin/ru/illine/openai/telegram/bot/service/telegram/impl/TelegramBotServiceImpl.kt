@@ -5,6 +5,8 @@ import com.github.kotlintelegrambot.dispatcher.Dispatcher
 import com.github.kotlintelegrambot.dispatcher.message
 import com.github.kotlintelegrambot.dispatcher.telegramError
 import com.github.kotlintelegrambot.entities.BotCommand
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import ru.illine.openai.telegram.bot.config.property.MessagesProperties
@@ -24,7 +26,8 @@ class TelegramBotServiceImpl(
     private val answerQuestionFacade: AnswerQuestionFacade,
     private val telegramBotFilterService: TelegramBotFilterService,
     private val telegramMessageHandlers: Set<TelegramMessageHandler>,
-    private val telegramBotCommandServices: Set<TelegramBotCommandService>
+    private val telegramBotCommandServices: Set<TelegramBotCommandService>,
+    private val openAICCoroutineScope: CoroutineScope
 ) : TelegramBotService {
 
     private val log = LoggerFactory.getLogger("SERVICE")
@@ -43,12 +46,15 @@ class TelegramBotServiceImpl(
 
     override fun message(dispatcher: Dispatcher) {
         dispatcher.message(telegramBotFilterService.messageUserFilter()) {
-            val chatId = message.chat.id
-            val messageId = message.messageId
-            val question = answerQuestionFacade.buildOpenAIQuestion(message.text!!, chatId)
-            answerQuestionFacade.saveLastTelegramUserMessage(message.text!!, chatId, messageId)
-            openAIService.chat(question).forEach {
-                handlerToService.get(TelegramHandlerType.OPEN_AI)!!.sendMessage(this.bot, chatId, it, messageId)
+            val handler = this
+            openAICCoroutineScope.launch {
+                val chatId = message.chat.id
+                val messageId = message.messageId
+                val question = answerQuestionFacade.buildOpenAIQuestion(message.text!!, chatId)
+                answerQuestionFacade.saveLastTelegramUserMessage(message.text!!, chatId, messageId)
+                openAIService.chat(question).forEach {
+                    handlerToService.get(TelegramHandlerType.OPEN_AI)!!.sendMessage(handler.bot, chatId, it, messageId)
+                }
             }
         }
     }
