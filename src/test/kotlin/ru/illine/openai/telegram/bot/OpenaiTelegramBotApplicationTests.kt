@@ -9,5 +9,4 @@ class OpenaiTelegramBotApplicationTests {
     @Test
     fun contextLoads() {
     }
-
 }

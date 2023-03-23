@@ -14,7 +14,7 @@ import ru.illine.openai.telegram.bot.service.openai.OpenAIService
 class OpenAIServiceImpl(
     private val openAIProperties: OpenAIProperties,
     private val messagesProperties: MessagesProperties,
-    private val openAi: OpenAiService,
+    private val openAi: OpenAiService
 ) : OpenAIService {
 
     private val log = LoggerFactory.getLogger("SERVICE")
@@ -43,5 +43,4 @@ class OpenAIServiceImpl(
             .build()
         return completionRequest
     }
-
 }

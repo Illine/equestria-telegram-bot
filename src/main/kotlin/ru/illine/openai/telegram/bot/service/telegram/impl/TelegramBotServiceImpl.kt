@@ -5,7 +5,6 @@ import com.github.kotlintelegrambot.dispatcher.Dispatcher
 import com.github.kotlintelegrambot.dispatcher.message
 import com.github.kotlintelegrambot.dispatcher.telegramError
 import com.github.kotlintelegrambot.entities.BotCommand
-import com.github.kotlintelegrambot.entities.ChatId
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import ru.illine.openai.telegram.bot.config.property.MessagesProperties
@@ -25,7 +24,7 @@ class TelegramBotServiceImpl(
     private val answerQuestionFacade: AnswerQuestionFacade,
     private val telegramBotFilterService: TelegramBotFilterService,
     private val telegramMessageHandlers: Set<TelegramMessageHandler>,
-    private val telegramBotCommandServices: Set<TelegramBotCommandService>,
+    private val telegramBotCommandServices: Set<TelegramBotCommandService>
 ) : TelegramBotService {
 
     private val log = LoggerFactory.getLogger("SERVICE")
@@ -61,9 +60,8 @@ class TelegramBotServiceImpl(
 
     override fun default(dispatcher: Dispatcher) {
         dispatcher.message(telegramBotFilterService.defaultFilter()) {
-            val chatId = message.chat.id
-            bot.sendMessage(chatId = ChatId.fromId(chatId), text = messagesProperties.wrongMessageTypeError)
-            handlerToService.get(TelegramHandlerType.DEFAULT)!!.sendMessage(this.bot, chatId, messagesProperties.wrongMessageTypeError)
+            handlerToService.get(TelegramHandlerType.DEFAULT)!!
+                .sendMessage(this.bot, message.chat.id, messagesProperties.wrongMessageTypeError)
         }
     }
 

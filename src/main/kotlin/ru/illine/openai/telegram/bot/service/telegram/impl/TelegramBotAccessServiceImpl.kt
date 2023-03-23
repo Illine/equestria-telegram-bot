@@ -8,7 +8,7 @@ import ru.illine.openai.telegram.bot.service.telegram.TelegramBotFilterService
 
 @Service
 class TelegramBotAccessServiceImpl(
-    private val telegramBotProperties: TelegramBotProperties,
+    private val telegramBotProperties: TelegramBotProperties
 ) : TelegramBotFilterService {
 
     override fun userFilter() = UserFilter(telegramBotProperties)

@@ -3,7 +3,11 @@ package ru.illine.openai.telegram.bot.config
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.theokanning.openai.OpenAiApi
 import com.theokanning.openai.service.OpenAiService
-import okhttp3.*
+import okhttp3.ConnectionPool
+import okhttp3.Interceptor
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.Response
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Import
@@ -16,9 +20,8 @@ import ru.illine.openai.telegram.bot.model.OpenAIAnswerHistory
 import java.io.IOException
 import java.util.concurrent.ConcurrentHashMap
 
-
 @Configuration
-@Import(LogbookAutoConfiguration::class) //Spring 3 bug: https://github.com/zalando/logbook/issues/1344
+@Import(LogbookAutoConfiguration::class) // Spring 3 bug: https://github.com/zalando/logbook/issues/1344
 class OpenAIConfig(private val properties: OpenAIProperties) {
 
     @Bean
@@ -39,14 +42,10 @@ class OpenAIConfig(private val properties: OpenAIProperties) {
     fun okHttpClient(
         connectionPool: ConnectionPool,
         openAIAuthenticationInterceptor: OpenAIAuthenticationInterceptor,
-        logbookInterceptor: LogbookInterceptor,
+        logbookInterceptor: LogbookInterceptor
     ): OkHttpClient {
-        return OkHttpClient.Builder()
-            .addInterceptor(openAIAuthenticationInterceptor)
-            .addNetworkInterceptor(logbookInterceptor)
-            .connectionPool(connectionPool)
-            .readTimeout(properties.timeoutInSec.toLong(), properties.timeUnit)
-            .build()
+        return OkHttpClient.Builder().addInterceptor(openAIAuthenticationInterceptor).addNetworkInterceptor(logbookInterceptor).connectionPool(connectionPool)
+            .readTimeout(properties.timeoutInSec.toLong(), properties.timeUnit).build()
     }
 
     @Bean
@@ -66,10 +65,7 @@ class OpenAIAuthenticationInterceptor internal constructor(private val token: St
 
     @Throws(IOException::class)
     override fun intercept(chain: Interceptor.Chain): Response {
-        val request: Request = chain.request()
-            .newBuilder()
-            .header("Authorization", "Bearer $token")
-            .build()
+        val request: Request = chain.request().newBuilder().header("Authorization", "Bearer $token").build()
         return chain.proceed(request)
     }
 }

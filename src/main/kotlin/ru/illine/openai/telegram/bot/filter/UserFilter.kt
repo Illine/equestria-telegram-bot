@@ -5,7 +5,7 @@ import com.github.kotlintelegrambot.extensions.filters.Filter
 import ru.illine.openai.telegram.bot.config.property.TelegramBotProperties
 
 class UserFilter(
-    private val telegramBotProperties: TelegramBotProperties,
+    private val telegramBotProperties: TelegramBotProperties
 ) : Filter {
 
     override fun Message.predicate(): Boolean = telegramBotProperties.allowedUsers.contains(chat.username)

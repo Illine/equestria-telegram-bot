@@ -6,7 +6,7 @@ import java.util.concurrent.ConcurrentHashMap
 
 @Service
 class ImMemoryTelegramQuestionServiceImpl(
-    private val chatToTelegramMessage: ConcurrentHashMap<Long, String>,
+    private val chatToTelegramMessage: ConcurrentHashMap<Long, String>
 ) : TelegramQuestionService {
 
     override fun getLastUserMessage(chatId: Long) = chatToTelegramMessage.get(chatId)

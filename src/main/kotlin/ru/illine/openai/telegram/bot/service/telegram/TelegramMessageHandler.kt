@@ -8,5 +8,4 @@ interface TelegramMessageHandler {
     fun sendMessage(bot: Bot, chatId: Long, message: String)
 
     fun getType(): TelegramHandlerType
-
 }

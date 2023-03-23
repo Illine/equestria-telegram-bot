@@ -8,7 +8,7 @@ import ru.illine.openai.telegram.bot.service.telegram.TelegramQuestionService
 @Service
 class AnswerQuestionFacadeImpl(
     private val telegramQuestionService: TelegramQuestionService,
-    private val openAIAnswerService: OpenAIAnswerService,
+    private val openAIAnswerService: OpenAIAnswerService
 ) : AnswerQuestionFacade {
 
     override fun buildOpenAIQuestion(sourceQuestion: String, chatId: Long) = openAIAnswerService.buildQuestion(sourceQuestion, chatId)

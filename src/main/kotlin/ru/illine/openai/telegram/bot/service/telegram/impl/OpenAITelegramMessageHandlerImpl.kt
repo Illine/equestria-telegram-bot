@@ -13,7 +13,7 @@ import ru.illine.openai.telegram.bot.service.telegram.TelegramMessageHandler
 @Service("openAITelegramMessageHandler")
 class OpenAITelegramMessageHandlerImpl(
     private val messagesProperties: MessagesProperties,
-    private val answerQuestionFacade: AnswerQuestionFacade,
+    private val answerQuestionFacade: AnswerQuestionFacade
 ) : TelegramMessageHandler {
 
     private val log = LoggerFactory.getLogger("SERVICE")
@@ -27,7 +27,8 @@ class OpenAITelegramMessageHandlerImpl(
             ifSuccess = {
                 log.debug("An answer has sent to Telegram successfully")
                 answerQuestionFacade.enrichOpenAIAnswerHistory(it.text!!, chatId)
-            }, ifError = {
+            },
+            ifError = {
                 log.error("An answer hasn't sent to Telegram! Send an error message to Telegram!")
                 bot.sendMessage(chatId = ChatId.fromId(chatId), text = messagesProperties.telegramError)
                 it.get()

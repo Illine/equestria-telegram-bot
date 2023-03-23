@@ -4,5 +4,4 @@ enum class TelegramHandlerType {
 
     OPEN_AI,
     DEFAULT
-
 }

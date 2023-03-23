@@ -3,7 +3,12 @@ package ru.illine.openai.telegram.bot.config.property
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.validation.annotation.Validated
 import java.util.concurrent.TimeUnit
-import javax.validation.constraints.*
+import javax.validation.constraints.DecimalMax
+import javax.validation.constraints.DecimalMin
+import javax.validation.constraints.Max
+import javax.validation.constraints.Min
+import javax.validation.constraints.NotEmpty
+import javax.validation.constraints.NotNull
 
 @Validated
 @ConfigurationProperties("openai")
@@ -34,8 +39,7 @@ data class OpenAIProperties(
     @NotNull
     val timeUnit: TimeUnit,
 
-
     @Min(3)
     @Max(10)
-    val answerHistoryCount: Int,
+    val answerHistoryCount: Int
 )

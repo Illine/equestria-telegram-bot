@@ -11,5 +11,4 @@ interface AnswerQuestionFacade {
     fun getLastTelegramUserMessage(chatId: Long): String?
 
     fun saveLastTelegramUserMessage(message: String, chatId: Long)
-
 }

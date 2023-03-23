@@ -7,13 +7,11 @@ import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import ru.illine.openai.telegram.bot.config.property.MessagesProperties
 import ru.illine.openai.telegram.bot.model.type.TelegramHandlerType
-import ru.illine.openai.telegram.bot.service.facade.AnswerQuestionFacade
 import ru.illine.openai.telegram.bot.service.telegram.TelegramMessageHandler
 
 @Service("defaultTelegramMessageHandler")
 class DefaultTelegramMessageHandlerImpl(
-    private val messagesProperties: MessagesProperties,
-    private val answerQuestionFacade: AnswerQuestionFacade,
+    private val messagesProperties: MessagesProperties
 ) : TelegramMessageHandler {
 
     private val log = LoggerFactory.getLogger("SERVICE")
@@ -26,8 +24,8 @@ class DefaultTelegramMessageHandlerImpl(
         ).fold(
             ifSuccess = {
                 log.debug("An answer has sent to Telegram successfully")
-                answerQuestionFacade.enrichOpenAIAnswerHistory(it.text!!, chatId)
-            }, ifError = {
+            },
+            ifError = {
                 log.error("An answer hasn't sent to Telegram! Send an error message to Telegram!")
                 bot.sendMessage(chatId = ChatId.fromId(chatId), text = messagesProperties.telegramError)
                 it.get()

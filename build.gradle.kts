@@ -1,10 +1,12 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
 import java.io.FileOutputStream
 import java.util.*
 
 plugins {
     id("org.springframework.boot") version "3.0.4"
     id("io.spring.dependency-management") version "1.1.0"
+    id("org.jlleitschuh.gradle.ktlint") version "11.3.1"
 
     kotlin("jvm") version "1.7.22"
     kotlin("plugin.spring") version "1.7.22"
@@ -12,7 +14,7 @@ plugins {
 }
 
 group = "ru.illine"
-version = "0.0.4"
+version = "0.0.5"
 java.sourceCompatibility = JavaVersion.VERSION_17
 
 repositories {
@@ -82,4 +84,10 @@ tasks.register("generateVersionProperties") {
 
 tasks.named("processResources") {
     dependsOn("generateVersionProperties")
+}
+
+ktlint {
+    reporters {
+        reporter(ReporterType.JSON)
+    }
 }

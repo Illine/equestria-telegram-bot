@@ -45,4 +45,3 @@ data class MessagesProperties(
     val repeatCommandDescription: String
 
 )
-

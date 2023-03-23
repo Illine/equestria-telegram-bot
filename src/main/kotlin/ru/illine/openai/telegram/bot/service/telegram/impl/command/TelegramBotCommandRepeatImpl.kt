@@ -16,7 +16,7 @@ class TelegramBotCommandRepeatImpl(
     private val messagesProperties: MessagesProperties,
     private val openAIService: OpenAIService,
     private val answerQuestionFacade: AnswerQuestionFacade,
-    private val telegramMessageHandlers: Set<TelegramMessageHandler>,
+    private val telegramMessageHandlers: Set<TelegramMessageHandler>
 ) : TelegramBotCommandService {
 
     private val handlerToService: Map<TelegramHandlerType, TelegramMessageHandler>

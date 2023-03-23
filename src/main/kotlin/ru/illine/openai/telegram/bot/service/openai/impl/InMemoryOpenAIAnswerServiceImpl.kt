@@ -10,7 +10,7 @@ import java.util.concurrent.ConcurrentHashMap
 @Service
 class InMemoryOpenAIAnswerServiceImpl(
     private val chatToOpenAIAnswers: ConcurrentHashMap<Long, MutableSet<OpenAIAnswerHistory>>,
-    private val openAIProperties: OpenAIProperties,
+    private val openAIProperties: OpenAIProperties
 ) : OpenAIAnswerService {
 
     private val log = LoggerFactory.getLogger("SERVICE")
