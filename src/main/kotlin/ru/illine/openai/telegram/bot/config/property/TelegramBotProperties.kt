@@ -16,9 +16,6 @@ data class TelegramBotProperties(
     val token: String,
 
     @NotNull
-    val allowedUsers: Collection<String>,
-
-    @NotNull
     val logLevel: TelegramBotLogLevelType,
 
     @Min(10)

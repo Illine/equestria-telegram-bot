@@ -5,13 +5,11 @@ import com.github.kotlintelegrambot.dispatcher.Dispatcher
 
 interface TelegramBotService {
 
-    fun menu(bot: Bot)
+    fun createMenu(bot: Bot)
 
-    fun message(dispatcher: Dispatcher)
+    fun askOpenAI(dispatcher: Dispatcher)
 
-    fun command(dispatcher: Dispatcher)
+    fun performCommand(dispatcher: Dispatcher)
 
-    fun default(dispatcher: Dispatcher)
-
-    fun error(dispatcher: Dispatcher)
+    fun getDefault(dispatcher: Dispatcher)
 }

@@ -1,0 +1,19 @@
+databaseChangeLog:
+  - changeSet:
+      id: 0.0.8
+      author: illine
+      comment: Database Initial
+      changes:
+        - tagDatabase:
+            tag: 0.0.8
+
+  # DDL
+  - include:
+      file: ddl/01_telegram_users.sql
+      relativeToChangelogFile: true
+  - include:
+      file: ddl/02_openai_answer_histories.sql
+      relativeToChangelogFile: true
+  - include:
+      file: ddl/03_telegram_user_question_histories.sql
+      relativeToChangelogFile: true

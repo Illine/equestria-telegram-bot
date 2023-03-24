@@ -7,13 +7,9 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import ru.illine.openai.telegram.bot.config.property.TelegramBotProperties
 import ru.illine.openai.telegram.bot.service.telegram.TelegramBotService
-import java.util.concurrent.ConcurrentHashMap
 
 @Configuration
 class TelegramBotConfig {
-
-    @Bean
-    fun chatToTelegramMessage() = ConcurrentHashMap<Long, Pair<String, Long>>()
 
     @Bean(destroyMethod = "stopPolling")
     fun bot(properties: TelegramBotProperties, telegramBotService: TelegramBotService): Bot {
@@ -23,13 +19,13 @@ class TelegramBotConfig {
             timeout = properties.timeoutInSec
 
             dispatch {
-                telegramBotService.message(this)
-                telegramBotService.command(this)
-                telegramBotService.default(this)
+                telegramBotService.askOpenAI(this)
+                telegramBotService.performCommand(this)
+                telegramBotService.getDefault(this)
             }
         }
 
-        telegramBotService.menu(bot)
+        telegramBotService.createMenu(bot)
         bot.startPolling()
         return bot
     }

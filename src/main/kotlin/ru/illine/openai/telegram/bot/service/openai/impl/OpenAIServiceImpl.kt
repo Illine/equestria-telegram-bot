@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service
 import ru.illine.openai.telegram.bot.config.property.MessagesProperties
 import ru.illine.openai.telegram.bot.config.property.OpenAIProperties
 import ru.illine.openai.telegram.bot.service.openai.OpenAIService
+import ru.illine.openai.telegram.bot.util.StringHelper
 
 @Service
 class OpenAIServiceImpl(
@@ -33,6 +34,10 @@ class OpenAIServiceImpl(
             log.error("Open AI returned an error!", e)
             return setOf(messagesProperties.openaiError)
         }
+    }
+
+    override fun chatSingleAnswer(question: String): String {
+        return chat(question).joinToString(separator = StringHelper.DEFAULT_SEPARATOR)
     }
 
     private fun buildOpenAIQuestion(question: String): ChatCompletionRequest {

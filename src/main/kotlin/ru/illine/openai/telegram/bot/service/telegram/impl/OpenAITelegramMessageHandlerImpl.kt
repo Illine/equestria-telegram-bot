@@ -27,7 +27,7 @@ class OpenAITelegramMessageHandlerImpl(
         ).fold(
             ifSuccess = {
                 log.debug("An answer has sent to Telegram successfully")
-                answerQuestionFacade.enrichOpenAIAnswerHistory(it.text!!, chatId)
+                answerQuestionFacade.enrichOpenAIAnswerHistory(it.text!!, chatId, it.chat.username!!)
             },
             ifError = {
                 log.error("An answer hasn't sent to Telegram! Send an error message to Telegram!")

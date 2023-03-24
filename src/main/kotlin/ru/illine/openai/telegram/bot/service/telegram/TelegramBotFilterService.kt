@@ -8,7 +8,7 @@ interface TelegramBotFilterService {
 
     fun messageUserFilter(): Filter
 
-    fun commandUserFilter(): Filter
+    fun adminFilter(): Filter
 
     fun defaultFilter(): Filter
 }

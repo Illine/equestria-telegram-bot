@@ -27,10 +27,28 @@ data class MessagesProperties(
     val wrongMessageTypeError: String,
 
     @NotEmpty
+    val unknownError: String,
+
+    @NotEmpty
+    val addUserCommandEmptyError: String,
+
+    @NotEmpty
+    val addUserCommandSaveError: String,
+
+    @NotEmpty
+    val addUserCommandFilterError: String,
+
+    @NotEmpty
+    val addUserCommandMuchMoreError: String,
+
+    @NotEmpty
     val unknownCommand: String,
 
     @NotEmpty
     val clearCommand: String,
+
+    @NotEmpty
+    val addUserCommand: String,
 
     @NotEmpty
     val startCommandDescription: String,
@@ -42,6 +60,18 @@ data class MessagesProperties(
     val versionCommandDescription: String,
 
     @NotEmpty
-    val repeatCommandDescription: String
+    val repeatCommandDescription: String,
+
+    @NotEmpty
+    val getUsersCommandDescription: String,
+
+    @NotEmpty
+    val addUserCommandDescription: String,
+
+    @NotEmpty
+    val removeUserCommandDescription: String,
+
+    @NotEmpty
+    val unknownCommandDescription: String
 
 )

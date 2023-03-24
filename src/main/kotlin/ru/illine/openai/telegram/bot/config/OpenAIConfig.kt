@@ -16,9 +16,7 @@ import org.zalando.logbook.autoconfigure.LogbookAutoConfiguration
 import org.zalando.logbook.okhttp.LogbookInterceptor
 import retrofit2.Retrofit
 import ru.illine.openai.telegram.bot.config.property.OpenAIProperties
-import ru.illine.openai.telegram.bot.model.OpenAIAnswerHistory
 import java.io.IOException
-import java.util.concurrent.ConcurrentHashMap
 
 @Configuration
 @Import(LogbookAutoConfiguration::class) // Spring 3 bug: https://github.com/zalando/logbook/issues/1344
@@ -56,9 +54,6 @@ class OpenAIConfig(private val properties: OpenAIProperties) {
 
     @Bean
     fun openAi(openAiApi: OpenAiApi) = OpenAiService(openAiApi)
-
-    @Bean
-    fun chatToOpenAIAnswers() = ConcurrentHashMap<Long, MutableSet<OpenAIAnswerHistory>>()
 }
 
 class OpenAIAuthenticationInterceptor internal constructor(private val token: String) : Interceptor {

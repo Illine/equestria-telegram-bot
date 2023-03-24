@@ -17,11 +17,18 @@ internal class UnknownCommandHandler(
 ) : Handler {
 
     override fun checkUpdate(update: Update): Boolean {
-        return (
-            update.message?.text != null && update.message!!.text!!.startsWith("/") &&
-                enumValues<TelegramBotCommandType>().none { it.command == update.message!!.text!!.drop(1) }
-            )
+        return hasText(update) && isCommand(update) && (foundCommand(update) or isUnknownCommand(update))
     }
+
+    private fun hasText(update: Update) = update.message?.text != null
+
+    private fun isCommand(update: Update) = update.message!!.text!!.startsWith("/")
+
+    private fun foundCommand(update: Update): Boolean {
+        return enumValues<TelegramBotCommandType>().none { it.match(update.message!!.text!!.drop(1)) }
+    }
+
+    private fun isUnknownCommand(update: Update) = TelegramBotCommandType.UNKNOWN.match(update.message!!.text!!.drop(1))
 
     override fun handleUpdate(bot: Bot, update: Update) {
         checkNotNull(update.message)

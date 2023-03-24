@@ -12,7 +12,7 @@ import java.util.concurrent.Executors
 class AsyncConfig {
 
     @Bean
-    fun openAIContext(properties: AsyncProperties) = Executors.newFixedThreadPool(properties.openAIThreadCount).asCoroutineDispatcher()
+    fun openAIContext(properties: AsyncProperties) = Executors.newFixedThreadPool(properties.openAIPoolSize).asCoroutineDispatcher()
 
     @Bean
     fun openAICCoroutineScope(openAIContext: ExecutorCoroutineDispatcher) = CoroutineScope(openAIContext)

@@ -11,6 +11,6 @@ data class AsyncProperties(
 
     @Min(2)
     @Max(10)
-    val openAIThreadCount: Int
+    val openAIPoolSize: Int
 
 )
