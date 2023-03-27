@@ -10,6 +10,7 @@ import ru.illine.openai.telegram.bot.config.property.MessagesProperties
 import ru.illine.openai.telegram.bot.config.property.OpenAIProperties
 import ru.illine.openai.telegram.bot.service.openai.OpenAIService
 import ru.illine.openai.telegram.bot.util.StringHelper
+import java.net.SocketTimeoutException
 
 @Service
 class OpenAIServiceImpl(
@@ -28,11 +29,13 @@ class OpenAIServiceImpl(
                 .choices
                 .map { it.message }
                 .map { it.content }
-//                .map { it.substringAfter("\n") } // OpenAI отправляет в первых двух строках тех. инфу?
                 .toSet()
         } catch (e: Exception) {
             log.error("Open AI returned an error!", e)
-            return setOf(messagesProperties.openaiError)
+            throw when (e.cause) {
+                is SocketTimeoutException -> e.cause!!
+                else -> e
+            }
         }
     }
 

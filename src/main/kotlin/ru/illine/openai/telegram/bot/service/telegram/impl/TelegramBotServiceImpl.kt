@@ -18,7 +18,8 @@ import ru.illine.openai.telegram.bot.service.telegram.TelegramBotCommandService
 import ru.illine.openai.telegram.bot.service.telegram.TelegramBotFilterService
 import ru.illine.openai.telegram.bot.service.telegram.TelegramBotService
 import ru.illine.openai.telegram.bot.service.telegram.TelegramMessageHandler
-import ru.illine.openai.telegram.bot.util.FunctionHelper
+import ru.illine.openai.telegram.bot.util.FunctionHelper.catchAny
+import java.net.SocketTimeoutException
 
 @Service
 class TelegramBotServiceImpl(
@@ -52,13 +53,17 @@ class TelegramBotServiceImpl(
         dispatcher.message(telegramBotFilterService.messageUserFilter()) {
             val handler = this
             openAICCoroutineScope.launch {
-                FunctionHelper.catchAny(
+                catchAny(
                     action = {
                         askOpenAI(handler)
                     },
                     ifException = {
+                        val errorMessage = when (it) {
+                            is SocketTimeoutException -> messagesProperties.openaiError
+                            else -> messagesProperties.unknownError
+                        }
                         handlerToService.get(TelegramHandlerType.DEFAULT)!!
-                            .sendMessage(handler.bot, message.chat.id, messagesProperties.unknownError)
+                            .sendMessage(handler.bot, message.chat.id, errorMessage, handler.message.messageId)
                     },
                     logging = {
                         log.error("Unknown exception!", it)

@@ -15,8 +15,9 @@ import ru.illine.openai.telegram.bot.service.openai.OpenAIService
 import ru.illine.openai.telegram.bot.service.telegram.AbstractTelegramBotCommandService
 import ru.illine.openai.telegram.bot.service.telegram.TelegramBotFilterService
 import ru.illine.openai.telegram.bot.service.telegram.TelegramMessageHandler
-import ru.illine.openai.telegram.bot.util.FunctionHelper
+import ru.illine.openai.telegram.bot.util.FunctionHelper.catchAny
 import ru.illine.openai.telegram.bot.util.FunctionHelper.check
+import java.net.SocketTimeoutException
 
 @Service
 class TelegramBotCommandRepeatImpl(
@@ -37,13 +38,22 @@ class TelegramBotCommandRepeatImpl(
         dispatcher.command(getCommand().command) {
             val handler = this
             openAICCoroutineScope.launch {
-                FunctionHelper.catchAny(
+                catchAny(
                     action = {
                         executeRepeat(handler)
                     },
                     ifException = {
+                        val originalMessageIdToErrorText = when (it) {
+                            is SocketTimeoutException -> {
+                                val lastMessageId = answerQuestionFacade.getLastTelegramUserMessage(handler.message.chat.id)!!.second
+                                val errorText = messagesProperties.openaiError
+                                lastMessageId to errorText
+                            }
+
+                            else -> null to messagesProperties.unknownError
+                        }
                         handlerToService.get(TelegramHandlerType.DEFAULT)!!
-                            .sendMessage(handler.bot, message.chat.id, messagesProperties.unknownError)
+                            .sendMessage(handler.bot, message.chat.id, originalMessageIdToErrorText.second, originalMessageIdToErrorText.first)
                     },
                     logging = {
                         log.error("Unknown exception!", it)

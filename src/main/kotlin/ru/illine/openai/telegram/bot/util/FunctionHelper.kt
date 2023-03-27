@@ -10,12 +10,12 @@ object FunctionHelper {
         false -> ifFalse()
     }
 
-    inline fun catchAny(action: () -> Unit, ifException: () -> Unit? = {}, logging: (Exception) -> Unit?) {
+    inline fun catchAny(action: () -> Unit, ifException: (Exception) -> Unit? = {}, logging: (Exception) -> Unit?) {
         try {
             action()
         } catch (e: Exception) {
             logging(e)
-            ifException()
+            ifException(e)
         }
     }
 
