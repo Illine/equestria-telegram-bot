@@ -6,7 +6,6 @@ import com.theokanning.openai.completion.chat.ChatMessageRole
 import com.theokanning.openai.service.OpenAiService
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
-import ru.illine.openai.telegram.bot.config.property.MessagesProperties
 import ru.illine.openai.telegram.bot.config.property.OpenAIProperties
 import ru.illine.openai.telegram.bot.service.openai.OpenAIService
 import ru.illine.openai.telegram.bot.util.StringHelper
@@ -15,7 +14,6 @@ import java.net.SocketTimeoutException
 @Service
 class OpenAIServiceImpl(
     private val openAIProperties: OpenAIProperties,
-    private val messagesProperties: MessagesProperties,
     private val openAi: OpenAiService
 ) : OpenAIService {
 

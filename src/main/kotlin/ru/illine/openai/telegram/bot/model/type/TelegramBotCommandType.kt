@@ -7,7 +7,7 @@ enum class TelegramBotCommandType(
     val visible: Boolean
 ) {
 
-    START("start", true) {
+    START("start", false) {
         override fun description(properties: MessagesProperties) = properties.startCommandDescription
     },
     REPEAT("repeat", true) {
