@@ -28,7 +28,7 @@ class OpenAIServiceImpl(
                 .choices
                 .map { it.message }
                 .map { it.content }
-                .map { it.substringAfter("\n") } // OpenAI отправляет в первых двух строках тех. инфу?
+//                .map { it.substringAfter("\n") } // OpenAI отправляет в первых двух строках тех. инфу?
                 .toSet()
         } catch (e: Exception) {
             log.error("Open AI returned an error!", e)

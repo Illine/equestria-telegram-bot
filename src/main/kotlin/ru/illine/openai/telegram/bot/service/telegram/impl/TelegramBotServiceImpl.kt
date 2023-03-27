@@ -84,11 +84,12 @@ class TelegramBotServiceImpl(
     private fun MessageHandlerEnvironment.askOpenAI(handler: MessageHandlerEnvironment) {
         val chatId = message.chat.id
         val messageId = message.messageId
+        val messageText = message.text!!
         val username = message.chat.username!!
-        val question = answerQuestionFacade.buildOpenAIQuestion(message.text!!, chatId, username)
-        answerQuestionFacade.saveLastTelegramUserMessage(message.text!!, chatId, messageId, username)
+        val question = answerQuestionFacade.buildOpenAIQuestion(messageText, chatId, username)
+        answerQuestionFacade.saveLastTelegramUserMessage(messageText, chatId, messageId, username)
         answerQuestionFacade.clearOldTelegramUserMessages(chatId)
         val answer = answerQuestionFacade.askOpenAI(question)
-        handlerToService.get(TelegramHandlerType.OPEN_AI)!!.sendMessage(handler.bot, chatId, answer, messageId)
+        handlerToService.get(TelegramHandlerType.OPEN_AI)!!.sendMessage(handler.bot, chatId, answer, messageId, messageText)
     }
 }

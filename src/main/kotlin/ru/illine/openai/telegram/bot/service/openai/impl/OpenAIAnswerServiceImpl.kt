@@ -8,7 +8,8 @@ import ru.illine.openai.telegram.bot.dao.access.OpenAIAnswerHistoryAccessService
 import ru.illine.openai.telegram.bot.dao.access.TelegramUserAccessService
 import ru.illine.openai.telegram.bot.model.dto.InnerOpenAIAnswerHistoryDto
 import ru.illine.openai.telegram.bot.service.openai.OpenAIAnswerService
-import ru.illine.openai.telegram.bot.util.StringHelper
+import ru.illine.openai.telegram.bot.util.StringHelper.Companion.DEFAULT_SEPARATOR
+import ru.illine.openai.telegram.bot.util.StringHelper.Companion.SINGLE_NEW_LINE_SEPARATOR
 
 @Service
 class OpenAIAnswerServiceImpl(
@@ -27,17 +28,17 @@ class OpenAIAnswerServiceImpl(
     }
 
     @Transactional
-    override fun enrichAnswerHistory(newAnswer: String, chatId: Long, username: String) {
+    override fun enrichAnswerHistory(newAnswer: String, newQuestion: String, chatId: Long, username: String) {
         log.debug("Enriching an answer history for a chat: [$chatId]")
         val openAIAnswerHistories = getAnswerHistory(chatId)
         if (openAIAnswerHistories.size < openAIProperties.answerHistoryCount) {
-            openAIAnswerHistoryAccessService.save(buildAnswer(username, chatId, newAnswer))
+            openAIAnswerHistoryAccessService.save(buildAnswer(username, chatId, newAnswer, newQuestion))
         } else {
             log.debug("An answer limit ([${openAIProperties.answerHistoryCount}]) was achieved.")
             log.debug("The oldest answer will be removed!")
             val oldestOpenAIAnswerHistory = openAIAnswerHistories.minBy { it.created!! }
             openAIAnswerHistoryAccessService.deleteById(oldestOpenAIAnswerHistory.id!!)
-            openAIAnswerHistoryAccessService.save(buildAnswer(username, chatId, newAnswer))
+            openAIAnswerHistoryAccessService.save(buildAnswer(username, chatId, newAnswer, newQuestion))
         }
     }
 
@@ -52,8 +53,8 @@ class OpenAIAnswerServiceImpl(
     private fun createOpenAIQuestion(answerHistories: Collection<InnerOpenAIAnswerHistoryDto>, sourceQuestion: String): String {
         return if (answerHistories.isNotEmpty()) {
             answerHistories
-                .map { it.openAIAnswer }
-                .joinToString(separator = StringHelper.DEFAULT_SEPARATOR)
+                .map { "${it.openAIQuestion}${SINGLE_NEW_LINE_SEPARATOR}${it.openAIAnswer}" }
+                .joinToString(separator = DEFAULT_SEPARATOR)
                 .let { "$it\n\n$sourceQuestion" }
         } else {
             sourceQuestion
@@ -63,14 +64,16 @@ class OpenAIAnswerServiceImpl(
     private fun buildAnswer(
         username: String,
         chatId: Long,
-        newAnswer: String
+        newAnswer: String,
+        newQuestion: String
     ): InnerOpenAIAnswerHistoryDto {
         val user = userAccessService.findByUsername(username)
         val savedNewAnswer =
             InnerOpenAIAnswerHistoryDto(
                 telegramUser = user,
                 telegramChatId = chatId,
-                openAIAnswer = newAnswer
+                openAIAnswer = newAnswer,
+                openAIQuestion = newQuestion
             )
         return savedNewAnswer
     }

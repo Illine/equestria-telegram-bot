@@ -38,6 +38,9 @@ class OpenAIAnswerHistoryEntity(
     @Column(name = "openai_answer", nullable = false, updatable = false)
     val openAIAnswer: String,
 
+    @Column(name = "openai_question", nullable = false, updatable = false)
+    val openAIQuestion: String,
+
     @Column(name = "created", nullable = false, updatable = false)
     @JsonIgnore
     val created: OffsetDateTime = OffsetDateTime.now()
@@ -49,6 +52,7 @@ class OpenAIAnswerHistoryEntity(
         telegramUser = telegramUser.toDto(),
         telegramChatId = telegramChatId,
         openAIAnswer = openAIAnswer,
+        openAIQuestion = openAIQuestion,
         created = created
     )
 

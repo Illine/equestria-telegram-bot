@@ -16,7 +16,7 @@ class DefaultTelegramMessageHandlerImpl(
 
     private val log = LoggerFactory.getLogger("SERVICE")
 
-    override fun sendMessage(bot: Bot, chatId: Long, message: String, sourceMessageId: Long?) {
+    override fun sendMessage(bot: Bot, chatId: Long, message: String, sourceMessageId: Long?, sourceMessage: String?) {
         bot.sendMessage(
             chatId = ChatId.fromId(chatId),
             text = message,

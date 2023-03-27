@@ -4,7 +4,7 @@ interface OpenAIAnswerService {
 
     fun buildQuestion(sourceQuestion: String, chatId: Long): String
 
-    fun enrichAnswerHistory(newAnswer: String, chatId: Long, username: String)
+    fun enrichAnswerHistory(newAnswer: String, newQuestion: String, chatId: Long, username: String)
 
     fun clearAnswerHistory(chatId: Long)
 }

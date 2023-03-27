@@ -18,7 +18,7 @@ class OpenAITelegramMessageHandlerImpl(
 
     private val log = LoggerFactory.getLogger("SERVICE")
 
-    override fun sendMessage(bot: Bot, chatId: Long, message: String, sourceMessageId: Long?) {
+    override fun sendMessage(bot: Bot, chatId: Long, message: String, sourceMessageId: Long?, sourceMessage: String?) {
         bot.sendMessage(
             chatId = ChatId.fromId(chatId),
             text = message,
@@ -27,7 +27,7 @@ class OpenAITelegramMessageHandlerImpl(
         ).fold(
             ifSuccess = {
                 log.debug("An answer has sent to Telegram successfully")
-                answerQuestionFacade.enrichOpenAIAnswerHistory(it.text!!, chatId, it.chat.username!!)
+                answerQuestionFacade.enrichOpenAIAnswerHistory(it.text!!, sourceMessage!!, chatId, it.chat.username!!)
             },
             ifError = {
                 log.error("An answer hasn't sent to Telegram! Send an error message to Telegram!")

@@ -69,11 +69,12 @@ class TelegramBotCommandRepeatImpl(
     private fun askOpenAI(chatId: Long, username: String, handler: CommandHandlerEnvironment) {
         answerQuestionFacade.getLastTelegramUserMessage(chatId)
             ?.let {
+                val lastTelegramQuestion = it.first
                 val lastTelegramUserMessageId = it.second
-                val question = answerQuestionFacade.buildOpenAIQuestion(it.first, chatId, username)
+                val question = answerQuestionFacade.buildOpenAIQuestion(lastTelegramQuestion, chatId, username)
                 val answer = openAIService.chatSingleAnswer(question)
                 handlerToService.get(TelegramHandlerType.OPEN_AI)!!
-                    .sendMessage(handler.bot, chatId, answer, lastTelegramUserMessageId)
+                    .sendMessage(handler.bot, chatId, answer, lastTelegramUserMessageId, lastTelegramQuestion)
             }
             ?: run {
                 handlerToService.get(TelegramHandlerType.DEFAULT)!!

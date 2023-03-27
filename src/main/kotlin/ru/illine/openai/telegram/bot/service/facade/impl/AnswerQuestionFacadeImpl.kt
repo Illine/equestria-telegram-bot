@@ -18,8 +18,8 @@ class AnswerQuestionFacadeImpl(
         return openAIAnswerService.buildQuestion(sourceQuestion, chatId)
     }
 
-    override fun enrichOpenAIAnswerHistory(newAnswer: String, chatId: Long, username: String) {
-        openAIAnswerService.enrichAnswerHistory(newAnswer, chatId, username)
+    override fun enrichOpenAIAnswerHistory(newAnswer: String, newQuestion: String, chatId: Long, username: String) {
+        openAIAnswerService.enrichAnswerHistory(newAnswer, newQuestion, chatId, username)
     }
 
     override fun clearOpenAIAnswerHistory(chatId: Long) {

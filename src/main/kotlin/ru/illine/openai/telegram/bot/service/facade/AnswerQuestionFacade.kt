@@ -4,7 +4,7 @@ interface AnswerQuestionFacade {
 
     fun buildOpenAIQuestion(sourceQuestion: String, chatId: Long, username: String): String
 
-    fun enrichOpenAIAnswerHistory(newAnswer: String, chatId: Long, username: String)
+    fun enrichOpenAIAnswerHistory(newAnswer: String, newQuestion: String, chatId: Long, username: String)
 
     fun clearOpenAIAnswerHistory(chatId: Long)
 

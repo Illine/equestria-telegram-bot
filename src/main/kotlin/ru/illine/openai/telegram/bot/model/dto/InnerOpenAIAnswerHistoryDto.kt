@@ -12,6 +12,8 @@ data class InnerOpenAIAnswerHistoryDto(
 
     val openAIAnswer: String,
 
+    val openAIQuestion: String,
+
     val created: OffsetDateTime? = null
 ) {
 
@@ -19,6 +21,7 @@ data class InnerOpenAIAnswerHistoryDto(
         id = id,
         telegramUser = telegramUser.toEntity(),
         telegramChatId = telegramChatId,
-        openAIAnswer = openAIAnswer
+        openAIAnswer = openAIAnswer,
+        openAIQuestion = openAIQuestion
     )
 }
