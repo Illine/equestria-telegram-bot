@@ -28,8 +28,12 @@ class DefaultTelegramMessageHandlerImpl(
             },
             ifError = {
                 log.error("An answer hasn't sent to Telegram! Send an error message to Telegram!")
-                bot.sendMessage(chatId = ChatId.fromId(chatId), text = messagesProperties.telegramError)
-                it.get()
+                log.error("Telegram error:\n{}", it.toString())
+                bot.sendMessage(
+                    chatId = ChatId.fromId(chatId),
+                    text = messagesProperties.telegramError,
+                    replyToMessageId = sourceMessageId
+                )
             }
         )
     }
