@@ -11,17 +11,17 @@ import ru.illine.openai.telegram.bot.util.FunctionHelper.catchAnyWithReturn
 @Service
 class OpenAIAskerTelegramBot(
     telegramBotProperties: TelegramBotProperties,
-    private val openAIService: OpenAIService
+    private val openAIService: OpenAIService,
+
 ) : AbstractTelegramBot(telegramBotProperties) {
 
     override fun onUpdateReceived(update: Update) {
         if (update.hasMessage() && update.message.hasText()) {
-
             catchAnyWithReturn(
                 action = {
                     val openAIAnswer = openAIService.chatSingleAnswer(update.message.text)
                     val message = buildAnswer(update, openAIAnswer)
-                    execute(message)
+                    execute(message).runCatching {  }
                 },
                 ifException = {
                     //ToDo Сделать формирование сообщения через i18n
