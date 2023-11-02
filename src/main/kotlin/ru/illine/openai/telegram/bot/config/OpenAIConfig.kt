@@ -1,18 +1,14 @@
 package ru.illine.openai.telegram.bot.config
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.theokanning.openai.OpenAiApi
+import com.theokanning.openai.client.OpenAiApi
 import com.theokanning.openai.service.OpenAiService
-import okhttp3.ConnectionPool
-import okhttp3.Interceptor
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.Response
+import okhttp3.*
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Import
-import org.zalando.logbook.Logbook
 import org.zalando.logbook.autoconfigure.LogbookAutoConfiguration
+import org.zalando.logbook.okhttp.GzipInterceptor
 import org.zalando.logbook.okhttp.LogbookInterceptor
 import retrofit2.Retrofit
 import ru.illine.openai.telegram.bot.config.property.OpenAIProperties
@@ -34,20 +30,24 @@ class OpenAIConfig(private val properties: OpenAIProperties) {
     fun openAIAuthenticationInterceptor() = OpenAIAuthenticationInterceptor(properties.token)
 
     @Bean
-    fun logbookInterceptor(logbook: Logbook) = LogbookInterceptor(logbook)
-
-    @Bean
-    fun okHttpClient(
+    fun openAIOkHttpClient(
         connectionPool: ConnectionPool,
         openAIAuthenticationInterceptor: OpenAIAuthenticationInterceptor,
-        logbookInterceptor: LogbookInterceptor
+        logbookInterceptor: LogbookInterceptor,
+        gzipInterceptor: GzipInterceptor
     ): OkHttpClient {
-        return OkHttpClient.Builder().addInterceptor(openAIAuthenticationInterceptor).addNetworkInterceptor(logbookInterceptor).connectionPool(connectionPool)
-            .readTimeout(properties.timeoutInSec.toLong(), properties.timeUnit).build()
+        return OkHttpClient.Builder()
+            .addNetworkInterceptor(logbookInterceptor)
+            .addNetworkInterceptor(gzipInterceptor)
+            .addInterceptor(openAIAuthenticationInterceptor)
+            .connectionPool(connectionPool)
+            .readTimeout(properties.timeoutInSec.toLong(), properties.timeUnit)
+            .build()
     }
 
     @Bean
-    fun retrofit(okHttpClient: OkHttpClient, objectMapper: ObjectMapper) = OpenAiService.defaultRetrofit(okHttpClient, objectMapper)
+    fun retrofit(openAIOkHttpClient: OkHttpClient, objectMapper: ObjectMapper) =
+        OpenAiService.defaultRetrofit(openAIOkHttpClient, objectMapper)
 
     @Bean
     fun openAiApi(retrofit: Retrofit) = retrofit.create(OpenAiApi::class.java)

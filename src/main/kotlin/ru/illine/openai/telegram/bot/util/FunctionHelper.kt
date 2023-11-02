@@ -10,20 +10,20 @@ object FunctionHelper {
         false -> ifFalse()
     }
 
-    inline fun catchAny(action: () -> Unit, ifException: (Exception) -> Unit? = {}, logging: (Exception) -> Unit?) {
+    inline fun catchAny(action: () -> Unit, ifException: (Exception) -> Unit? = {}, errorLogging: (Exception) -> Unit?) {
         try {
             action()
         } catch (e: Exception) {
-            logging(e)
+            errorLogging(e)
             ifException(e)
         }
     }
 
-    inline fun <T> catchAnyWithReturn(action: () -> T, ifException: () -> T, logging: (Exception) -> Unit?): T {
+    inline fun <T> catchAnyWithReturn(action: () -> T, ifException: () -> T, errorLogging: (Exception) -> Unit?): T {
         return try {
             action()
         } catch (e: Exception) {
-            logging(e)
+            errorLogging(e)
             ifException()
         }
     }

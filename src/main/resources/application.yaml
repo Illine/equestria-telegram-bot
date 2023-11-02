@@ -35,8 +35,6 @@ spring:
 telegram:
   bot:
     token: ${TELEGRAM_BOT_TOKEN}
-    log-level: ${TELEGRAM_BOT_LOG_LEVEL:network_basic}
-    timeout-in-sec: ${TELEGRAM_BOT_TIMEOUT_IN_SEC:120}
 
 openai:
   token: ${OPEN_AI_TOKEN}
@@ -48,43 +46,13 @@ openai:
   time-unit: ${OPEN_AI_TIME_UNIT:seconds}
   answer-history-count: ${OPEN_AI_ANSWER_HISTORY:5}
 
-messages:
-  bot-start: "Привет!\n\nЭтот бот открывает вас доступ к продукту *OpenAI: Completions*.\n\nБот использует ту же модель (${openai.model}), что и ChatGPT.\n\nДанный бот умеет только отправлять текстовые запросы пользователя к OpenAI и пересылать полученный ответ обратно. \n\n*Любые сообщения кроме текстовых запрещены!*"
-  access-error: "К сожалению, у вас нет доступа для использования этой функциональности."
-  openai-error: "Ошибка обработки запроса на стороне OpenAI. Попробуйте позднее."
-  telegram-error: "Ошибки обработки запроса на стороне Telegram."
-  wrong-message-type-error: "Этот бот поддерживает только текстовые сообщения и команды!"
-  repeat-command-error: "Вы ещё не задавали вопросы!"
-  unknown-error: "Неизвестная ошибка. Повторите запрос позднее."
-  add-user-command-empty-error: "Вы не передали ни одного имени пользователя!"
-  add-user-command-save-error: "Пользователь уже существует!"
-  add-user-command-filter-error: "Некорректное имя пользователя! Оно должно содержать строчные и/или прописные буквы латинского алфавита, цифры и нижние подчёркивания."
-  add-user-command-much-more-error: "Нельзя добавить более одного пользователя за раз. Будет добавлен: "
-  unknown-command: "Неизвестная команда!"
-  clear-command: "История OpenAI очищена для текущего чата."
-  add-user-command: "Был добавлен пользователь: "
-  start-command-description: "Информация о боте."
-  clear-command-description: "Очищает контекст OpenAI."
-  version-command-description: "Версия бота"
-  repeat-command-description: "Повторяет предыдущий вопрос к OpenAI."
-  get-users-command-description: "Выводит всех пользователей."
-  add-user-command-description: "Добавляет пользователя для доступа к бота."
-  remove-user-command-description: "Удаляет пользователей для доступа к боту."
-
-  unknown-command-description: ${messages.unknown-command}
-
 logbook:
   strategy: body-only-if-status-at-least
   minimum-status: ${LOGBOOK_MINIMUM_STATUS:400}
   format:
     style: http
   logger:
-    name: REST
-
-version:
-  file-name: "version.properties"
-  property-name: "version"
-  description: "Текущая версия бота"
+    name: API
 
 async:
   open-ai-pool-size: ${OPEN_AI_POOL_SIZE:3}

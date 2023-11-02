@@ -6,11 +6,20 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.zalando.logbook.Correlation
 import org.zalando.logbook.HttpLogWriter
+import org.zalando.logbook.Logbook
 import org.zalando.logbook.Precorrelation
+import org.zalando.logbook.okhttp.GzipInterceptor
+import org.zalando.logbook.okhttp.LogbookInterceptor
 import ru.illine.openai.telegram.bot.config.property.LogbookProperties
 
 @Configuration
 class LogbookConfig {
+
+    @Bean
+    fun gzipInterceptor() = GzipInterceptor()
+
+    @Bean
+    fun logbookInterceptor(logbook: Logbook) = LogbookInterceptor(logbook)
 
     @Bean
     fun writer(properties: LogbookProperties) = DefaultHttpLogWriter(properties)
