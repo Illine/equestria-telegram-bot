@@ -1,7 +1,7 @@
 package ru.illine.openai.telegram.bot.dao.repository
 
 import org.springframework.data.jpa.repository.JpaRepository
-import ru.illine.openai.telegram.bot.dao.entity.OpenAIAnswerHistoryEntity
+import ru.illine.openai.telegram.bot.model.entity.OpenAIAnswerHistoryEntity
 
 interface OpenAIAnswerHistoryRepository : JpaRepository<OpenAIAnswerHistoryEntity, Long> {
 

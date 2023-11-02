@@ -1,4 +1,4 @@
-package ru.illine.openai.telegram.bot.dao.entity
+package ru.illine.openai.telegram.bot.model.entity
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import jakarta.persistence.Column
@@ -11,18 +11,18 @@ import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.SequenceGenerator
 import jakarta.persistence.Table
-import ru.illine.openai.telegram.bot.model.dto.InternalTelegramUserQuestionHistoryDto
+import ru.illine.openai.telegram.bot.model.dto.InnerOpenAIAnswerHistoryDto
 import java.time.OffsetDateTime
 
 @Entity
-@Table(name = "telegram_user_question_histories")
-class TelegramUserQuestionHistoryEntity(
+@Table(name = "openai_answer_histories")
+class OpenAIAnswerHistoryEntity(
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "telegramUserQuestionHistorySeqGenerator")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "openAIAnswerHistorySeqGenerator")
     @SequenceGenerator(
-        name = "telegramUserQuestionHistorySeqGenerator",
-        sequenceName = "telegram_user_question_history_seq",
+        name = "openAIAnswerHistorySeqGenerator",
+        sequenceName = "openai_answer_history_seq",
         allocationSize = 1
     )
     val id: Long? = null,
@@ -35,11 +35,11 @@ class TelegramUserQuestionHistoryEntity(
     @Column(name = "telegram_chat_id", nullable = false, updatable = false)
     val telegramChatId: Long,
 
-    @Column(name = "telegram_message_id", nullable = false, updatable = false)
-    val telegramMessageId: Long,
+    @Column(name = "openai_answer", nullable = false, updatable = false)
+    val openAIAnswer: String,
 
-    @Column(name = "telegram_user_question", nullable = false, updatable = false)
-    val telegramUserQuestion: String,
+    @Column(name = "openai_question", nullable = false, updatable = false)
+    val openAIQuestion: String,
 
     @Column(name = "created", nullable = false, updatable = false)
     @JsonIgnore
@@ -47,12 +47,12 @@ class TelegramUserQuestionHistoryEntity(
 
 ) {
 
-    fun toDto() = InternalTelegramUserQuestionHistoryDto(
+    fun toDto() = InnerOpenAIAnswerHistoryDto(
         id = id,
         telegramUser = telegramUser.toDto(),
-        telegramMessageId = telegramMessageId,
         telegramChatId = telegramChatId,
-        telegramUserQuestion = telegramUserQuestion,
+        openAIAnswer = openAIAnswer,
+        openAIQuestion = openAIQuestion,
         created = created
     )
 
@@ -60,11 +60,10 @@ class TelegramUserQuestionHistoryEntity(
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
 
-        other as TelegramUserQuestionHistoryEntity
+        other as OpenAIAnswerHistoryEntity
 
         if (id != other.id) return false
         if (telegramChatId != other.telegramChatId) return false
-        if (telegramMessageId != other.telegramMessageId) return false
 
         return true
     }
@@ -72,7 +71,6 @@ class TelegramUserQuestionHistoryEntity(
     override fun hashCode(): Int {
         var result = id?.hashCode() ?: 0
         result = 31 * result + telegramChatId.hashCode()
-        result = 31 * result + telegramMessageId.hashCode()
         return result
     }
 }

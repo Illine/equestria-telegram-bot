@@ -1,6 +1,6 @@
 package ru.illine.openai.telegram.bot.model.dto
 
-import ru.illine.openai.telegram.bot.dao.entity.TelegramUserEntity
+import ru.illine.openai.telegram.bot.model.entity.TelegramUserEntity
 
 data class InnerTelegramUserDto(
     var id: Long? = null,

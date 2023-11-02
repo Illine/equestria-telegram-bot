@@ -62,8 +62,8 @@ class TelegramBotServiceImpl(
                             is SocketTimeoutException -> messagesProperties.openaiError
                             else -> messagesProperties.unknownError
                         }
-                        handlerToService.get(TelegramHandlerType.DEFAULT)!!
-                            .sendMessage(handler.bot, message.chat.id, errorMessage, handler.message.messageId)
+                        handlerToService[TelegramHandlerType.DEFAULT]
+                            ?.sendMessage(handler.bot, message.chat.id, errorMessage, handler.message.messageId)
                     },
                     logging = {
                         log.error("Unknown exception!", it)
@@ -75,14 +75,18 @@ class TelegramBotServiceImpl(
 
     override fun performCommand(dispatcher: Dispatcher) {
         enumValues<TelegramBotCommandType>().forEach {
-            commandToService.get(it)?.apply { this.executeCommand(dispatcher) }
+            commandToService[it]?.apply { this.executeCommand(dispatcher) }
         }
     }
 
     override fun getDefault(dispatcher: Dispatcher) {
         dispatcher.message(telegramBotFilterService.defaultFilter()) {
-            handlerToService.get(TelegramHandlerType.DEFAULT)!!
-                .sendMessage(this.bot, message.chat.id, messagesProperties.wrongMessageTypeError)
+            handlerToService[TelegramHandlerType.DEFAULT]
+                ?.sendMessage(
+                    this.bot,
+                    message.chat.id,
+                    messagesProperties.wrongMessageTypeError
+                )
         }
     }
 
@@ -95,6 +99,6 @@ class TelegramBotServiceImpl(
         answerQuestionFacade.saveLastTelegramUserMessage(messageText, chatId, messageId, username)
         answerQuestionFacade.clearOldTelegramUserMessages(chatId)
         val answer = answerQuestionFacade.askOpenAI(question)
-        handlerToService.get(TelegramHandlerType.OPEN_AI)!!.sendMessage(handler.bot, chatId, answer, messageId, messageText)
+        handlerToService[TelegramHandlerType.OPEN_AI]?.sendMessage(handler.bot, chatId, answer, messageId, messageText)
     }
 }

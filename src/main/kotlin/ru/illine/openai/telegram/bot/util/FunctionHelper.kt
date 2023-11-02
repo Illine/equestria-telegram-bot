@@ -20,11 +20,11 @@ object FunctionHelper {
     }
 
     inline fun <T> catchAnyWithReturn(action: () -> T, ifException: () -> T, logging: (Exception) -> Unit?): T {
-        try {
-            return action()
+        return try {
+            action()
         } catch (e: Exception) {
             logging(e)
-            return ifException()
+            ifException()
         }
     }
 }

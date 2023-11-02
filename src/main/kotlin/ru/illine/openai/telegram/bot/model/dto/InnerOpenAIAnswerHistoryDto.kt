@@ -1,6 +1,6 @@
 package ru.illine.openai.telegram.bot.model.dto
 
-import ru.illine.openai.telegram.bot.dao.entity.OpenAIAnswerHistoryEntity
+import ru.illine.openai.telegram.bot.model.entity.OpenAIAnswerHistoryEntity
 import java.time.OffsetDateTime
 
 data class InnerOpenAIAnswerHistoryDto(
