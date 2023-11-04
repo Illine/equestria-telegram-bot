@@ -1,4 +1,4 @@
-package ru.illine.openai.telegram.bot.model
+package ru.illine.telegram.bot.equestria.model
 
 enum class TelegramBotType {
 

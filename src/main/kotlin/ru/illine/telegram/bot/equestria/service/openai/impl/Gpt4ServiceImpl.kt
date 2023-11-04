@@ -1,4 +1,4 @@
-package ru.illine.openai.telegram.bot.service.openai.impl
+package ru.illine.telegram.bot.equestria.service.openai.impl
 
 import com.theokanning.openai.completion.chat.ChatCompletionRequest
 import com.theokanning.openai.completion.chat.ChatMessage
@@ -6,9 +6,9 @@ import com.theokanning.openai.completion.chat.ChatMessageRole
 import com.theokanning.openai.service.OpenAiService
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
-import ru.illine.openai.telegram.bot.config.property.GptProperties
-import ru.illine.openai.telegram.bot.service.openai.GptService
-import ru.illine.openai.telegram.bot.util.StringHelper
+import ru.illine.telegram.bot.equestria.config.property.GptProperties
+import ru.illine.telegram.bot.equestria.service.openai.GptService
+import ru.illine.telegram.bot.equestria.util.StringHelper
 import java.net.SocketTimeoutException
 
 @Service

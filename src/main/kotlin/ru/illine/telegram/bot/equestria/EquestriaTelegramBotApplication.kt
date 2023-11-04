@@ -1,12 +1,12 @@
-package ru.illine.openai.telegram.bot
+package ru.illine.telegram.bot.equestria
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.runApplication
-import ru.illine.openai.telegram.bot.config.property.AsyncProperties
-import ru.illine.openai.telegram.bot.config.property.LogbookProperties
-import ru.illine.openai.telegram.bot.config.property.GptProperties
-import ru.illine.openai.telegram.bot.config.property.TelegramBotProperties
+import ru.illine.telegram.bot.equestria.config.property.AsyncProperties
+import ru.illine.telegram.bot.equestria.config.property.LogbookProperties
+import ru.illine.telegram.bot.equestria.config.property.GptProperties
+import ru.illine.telegram.bot.equestria.config.property.TelegramBotProperties
 
 @EnableConfigurationProperties(
     *[

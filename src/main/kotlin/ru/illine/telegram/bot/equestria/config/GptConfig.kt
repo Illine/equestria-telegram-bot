@@ -1,4 +1,4 @@
-package ru.illine.openai.telegram.bot.config
+package ru.illine.telegram.bot.equestria.config
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.theokanning.openai.client.OpenAiApi
@@ -11,12 +11,12 @@ import org.zalando.logbook.autoconfigure.LogbookAutoConfiguration
 import org.zalando.logbook.okhttp.GzipInterceptor
 import org.zalando.logbook.okhttp.LogbookInterceptor
 import retrofit2.Retrofit
-import ru.illine.openai.telegram.bot.config.property.GptProperties
+import ru.illine.telegram.bot.equestria.config.property.GptProperties
 import java.io.IOException
 
 @Configuration
 @Import(LogbookAutoConfiguration::class) // Spring 3 bug: https://github.com/zalando/logbook/issues/1344
-class OpenAIConfig(private val properties: GptProperties) {
+class GptConfig(private val properties: GptProperties) {
 
     @Bean
     fun objectMapper() = OpenAiService.defaultObjectMapper()
@@ -27,10 +27,10 @@ class OpenAIConfig(private val properties: GptProperties) {
     }
 
     @Bean
-    fun openAIAuthenticationInterceptor() = OpenAIAuthenticationInterceptor(properties.token)
+    fun openAiAuthenticationInterceptor() = OpenAIAuthenticationInterceptor(properties.token)
 
     @Bean
-    fun openAIOkHttpClient(
+    fun openAiOkHttpClient(
         connectionPool: ConnectionPool,
         openAIAuthenticationInterceptor: OpenAIAuthenticationInterceptor,
         logbookInterceptor: LogbookInterceptor,
@@ -54,13 +54,13 @@ class OpenAIConfig(private val properties: GptProperties) {
 
     @Bean
     fun openAi(openAiApi: OpenAiApi) = OpenAiService(openAiApi)
-}
 
-class OpenAIAuthenticationInterceptor internal constructor(private val token: String) : Interceptor {
+    class OpenAIAuthenticationInterceptor internal constructor(private val token: String) : Interceptor {
 
-    @Throws(IOException::class)
-    override fun intercept(chain: Interceptor.Chain): Response {
-        val request: Request = chain.request().newBuilder().header("Authorization", "Bearer $token").build()
-        return chain.proceed(request)
+        @Throws(IOException::class)
+        override fun intercept(chain: Interceptor.Chain): Response {
+            val request: Request = chain.request().newBuilder().header("Authorization", "Bearer $token").build()
+            return chain.proceed(request)
+        }
     }
 }

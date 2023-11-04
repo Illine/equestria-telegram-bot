@@ -5,19 +5,19 @@ import java.io.FileOutputStream
 import java.util.*
 
 plugins {
-    id("org.springframework.boot") version "3.0.4"
-    id("io.spring.dependency-management") version "1.1.0"
+    id("org.springframework.boot") version "3.1.5"
+    id("io.spring.dependency-management") version "1.1.3"
     id("org.jlleitschuh.gradle.ktlint") version "11.3.1"
     id("org.liquibase.gradle") version "2.2.0"
 
     kotlin("jvm") version "1.7.22"
     kotlin("kapt") version "1.7.22"
-    kotlin("plugin.spring") version "1.7.22"
-    kotlin("plugin.jpa") version "1.7.22"
+    kotlin("plugin.spring") version "1.9.20"
+    kotlin("plugin.jpa") version "1.9.20"
 }
 
 group = "ru.illine"
-version = "0.0.12"
+version = "0.1.0"
 java.sourceCompatibility = JavaVersion.VERSION_17
 
 repositories {
@@ -100,6 +100,7 @@ tasks.getByName<org.springframework.boot.gradle.tasks.bundling.BootJar>("bootJar
 
 tasks.withType<KotlinCompile> {
     kotlinOptions {
+        javaParameters = true
         freeCompilerArgs = listOf("-Xjsr305=strict")
         jvmTarget = "17"
     }

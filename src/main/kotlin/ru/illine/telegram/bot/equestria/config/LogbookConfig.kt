@@ -1,4 +1,4 @@
-package ru.illine.openai.telegram.bot.config
+package ru.illine.telegram.bot.equestria.config
 
 import ch.qos.logback.classic.Logger
 import org.slf4j.LoggerFactory
@@ -11,7 +11,7 @@ import org.zalando.logbook.Logbook
 import org.zalando.logbook.Precorrelation
 import org.zalando.logbook.okhttp.GzipInterceptor
 import org.zalando.logbook.okhttp.LogbookInterceptor
-import ru.illine.openai.telegram.bot.config.property.LogbookProperties
+import ru.illine.telegram.bot.equestria.config.property.LogbookProperties
 
 @Configuration
 class LogbookConfig {

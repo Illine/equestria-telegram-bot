@@ -1,4 +1,4 @@
-package ru.illine.openai.telegram.bot.util
+package ru.illine.telegram.bot.equestria.util
 
 class StringHelper {
 

@@ -1,4 +1,4 @@
-package ru.illine.openai.telegram.bot.config
+package ru.illine.telegram.bot.equestria.config
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration

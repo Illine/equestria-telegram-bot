@@ -39,21 +39,21 @@ telegram:
     token: ${TELEGRAM_BOT_TOKEN}
 
 gpt:
-  token: ${OPEN_AI_TOKEN}
-  temperature: ${OPEN_AI_TEMPERATURE:0.3}
-  timeout-in-sec: ${OPEN_AI_TIMEOUT_IN_SEC:120}
-  max-idle-connections: ${OPEN_AI_MAX_IDLE_CONNECTIONS:5}
-  keep-alive-duration: ${OPEN_AI_KEEP_ALIVE_DURATION:5}
-  time-unit: ${OPEN_AI_TIME_UNIT:seconds}
-  answer-history-count: ${OPEN_AI_ANSWER_HISTORY:5}
+  token: ${GPT_TOKEN}
+  temperature: ${GPT_TEMPERATURE:0.3}
+  timeout-in-sec: ${GPT_TIMEOUT_IN_SEC:120}
+  max-idle-connections: ${GPT_MAX_IDLE_CONNECTIONS:5}
+  keep-alive-duration: ${GPT_KEEP_ALIVE_DURATION:5}
+  time-unit: ${GPT_AI_TIME_UNIT:seconds}
+  answer-history-count: ${GPT_ANSWER_HISTORY:5}
 
 logbook:
   strategy: body-only-if-status-at-least
-  minimum-status: ${LOGBOOK_MINIMUM_STATUS:400}
+  minimum-status: ${LOGBOOK_MINIMUM_STATUS:200}
   format:
     style: http
   logger:
     name: API
 
 async:
-  open-ai-pool-size: ${OPEN_AI_POOL_SIZE:5}
+  default-pool-size: ${GPT_POOL_SIZE:5}

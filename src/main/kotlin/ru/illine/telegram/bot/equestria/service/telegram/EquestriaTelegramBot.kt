@@ -1,4 +1,4 @@
-package ru.illine.openai.telegram.bot.service.telegram
+package ru.illine.telegram.bot.equestria.service.telegram
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -7,9 +7,9 @@ import org.springframework.stereotype.Service
 import org.telegram.telegrambots.bots.TelegramLongPollingBot
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage
 import org.telegram.telegrambots.meta.api.objects.Update
-import ru.illine.openai.telegram.bot.config.property.TelegramBotProperties
-import ru.illine.openai.telegram.bot.service.openai.GptService
-import ru.illine.openai.telegram.bot.util.FunctionHelper.catchAnyWithReturn
+import ru.illine.telegram.bot.equestria.config.property.TelegramBotProperties
+import ru.illine.telegram.bot.equestria.service.openai.GptService
+import ru.illine.telegram.bot.equestria.util.FunctionHelper.catchAnyWithReturn
 
 @Service
 class EquestriaTelegramBot(
