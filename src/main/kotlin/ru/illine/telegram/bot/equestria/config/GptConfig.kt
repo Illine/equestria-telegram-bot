@@ -13,6 +13,7 @@ import org.zalando.logbook.okhttp.LogbookInterceptor
 import retrofit2.Retrofit
 import ru.illine.telegram.bot.equestria.config.property.GptProperties
 import java.io.IOException
+import java.util.concurrent.TimeUnit
 
 @Configuration
 @Import(LogbookAutoConfiguration::class) // Spring 3 bug: https://github.com/zalando/logbook/issues/1344
@@ -23,7 +24,7 @@ class GptConfig(private val properties: GptProperties) {
 
     @Bean
     fun connectionPool(): ConnectionPool {
-        return ConnectionPool(properties.maxIdleConnections, properties.keepAliveInSec.toLong(), properties.timeUnit)
+        return ConnectionPool(properties.http.maxIdleConnections, properties.http.keepAliveInSec, TimeUnit.SECONDS)
     }
 
     @Bean
@@ -41,7 +42,7 @@ class GptConfig(private val properties: GptProperties) {
             .addNetworkInterceptor(gptGzipInterceptor)
             .addInterceptor(gptAuthenticationInterceptor)
             .connectionPool(connectionPool)
-            .readTimeout(properties.timeoutInSec.toLong(), properties.timeUnit)
+            .readTimeout(properties.http.timeoutInSec, TimeUnit.SECONDS)
             .build()
     }
 

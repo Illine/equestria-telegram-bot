@@ -8,7 +8,7 @@ import org.telegram.telegrambots.bots.TelegramLongPollingBot
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage
 import org.telegram.telegrambots.meta.api.objects.Update
 import ru.illine.telegram.bot.equestria.config.property.TelegramBotProperties
-import ru.illine.telegram.bot.equestria.service.openai.GptService
+import ru.illine.telegram.bot.equestria.service.gpt.GptService
 import ru.illine.telegram.bot.equestria.util.FunctionHelper.catchAnyWithReturn
 
 @Service

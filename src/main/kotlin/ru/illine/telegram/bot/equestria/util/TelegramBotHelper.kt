@@ -10,17 +10,17 @@ class TelegramBotHelper {
         private val READER_THREAD_FIELD_NAME = "readerThread"
         private val HTTP_CLIENT_FIELD_NAME = "httpclient"
 
-        fun setBotSessionHttpClient(
+        fun replaceBotSessionHttpClient(
             session: BotSession,
             httpClient: HttpClient
         ) {
-            val readerThreadField = session.javaClass.getDeclaredField(READER_THREAD_FIELD_NAME)
-            readerThreadField.trySetAccessible()
-            val readerThread = ReflectionUtils.getField(readerThreadField, session)
+            val readerThread = ReflectionUtils.findField(session.javaClass, READER_THREAD_FIELD_NAME)!!
+                .apply { ReflectionUtils.makeAccessible(this) }
+                .let { ReflectionUtils.getField(it, session) }!!
 
-            val httpclientField = readerThread!!.javaClass.getDeclaredField(HTTP_CLIENT_FIELD_NAME)
-            httpclientField.trySetAccessible()
-            ReflectionUtils.setField(httpclientField, readerThread, httpClient)
+            ReflectionUtils.findField(readerThread.javaClass, HTTP_CLIENT_FIELD_NAME)!!
+                .apply { ReflectionUtils.makeAccessible(this) }
+                .apply { ReflectionUtils.setField(this, readerThread, httpClient) }
         }
     }
 }

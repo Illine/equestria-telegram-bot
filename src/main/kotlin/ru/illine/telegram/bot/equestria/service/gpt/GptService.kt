@@ -1,4 +1,4 @@
-package ru.illine.telegram.bot.equestria.service.openai
+package ru.illine.telegram.bot.equestria.service.gpt
 
 interface GptService {
 

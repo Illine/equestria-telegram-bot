@@ -34,18 +34,20 @@ spring:
   liquibase:
     enabled: false
 
-telegram:
-  bot:
-    token: ${TELEGRAM_BOT_TOKEN}
+telegram-bot:
+  token: ${TELEGRAM_BOT_TOKEN}
+  http:
+    connection-time-to-live-in-sec: ${TELEGRAM_BOT_HTTP_CONNECTION_TIME_TO_LIVE:60}
+    max-connection-total: ${TELEGRAM_BOT_MAX_CONNECTION_TOTAL:100}
 
 gpt:
   token: ${GPT_TOKEN}
   temperature: ${GPT_TEMPERATURE:0.3}
-  timeout-in-sec: ${GPT_TIMEOUT_IN_SEC:120}
-  keep-alive-in-sec: ${GPT_KEEP_ALIVE_DURATION:5}
-  time-unit: ${GPT_AI_TIME_UNIT:seconds}
-  max-idle-connections: ${GPT_MAX_IDLE_CONNECTIONS:5}
   answer-history-count: ${GPT_ANSWER_HISTORY:5}
+  http:
+    timeout-in-sec: ${GPT_HTTP_TIMEOUT_IN_SEC:120}
+    keep-alive-in-sec: ${GPT_HTTP_KEEP_ALIVE_DURATION:5}
+    max-idle-connections: ${GPT_HTTP_MAX_IDLE_CONNECTIONS:5}
 
 logbook:
   strategy: body-only-if-status-at-least
@@ -56,4 +58,4 @@ logbook:
     name: API
 
 async:
-  default-pool-size: ${GPT_POOL_SIZE:5}
+  default-pool-size: ${GPT_POOL_SIZE:3}
