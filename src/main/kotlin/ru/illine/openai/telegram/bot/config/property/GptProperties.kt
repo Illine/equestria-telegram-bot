@@ -11,17 +11,14 @@ import javax.validation.constraints.NotEmpty
 import javax.validation.constraints.NotNull
 
 @Validated
-@ConfigurationProperties("openai")
-data class OpenAIProperties(
+@ConfigurationProperties("gpt")
+data class GptProperties(
 
     @NotEmpty
     val token: String,
 
-    @NotEmpty
-    val model: String,
-
     @DecimalMin("0.1")
-    @DecimalMax("2.0")
+    @DecimalMax("1.0")
     val temperature: Double,
 
     @Min(30)

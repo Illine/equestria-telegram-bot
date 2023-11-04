@@ -6,20 +6,21 @@ import com.theokanning.openai.completion.chat.ChatMessageRole
 import com.theokanning.openai.service.OpenAiService
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
-import ru.illine.openai.telegram.bot.config.property.OpenAIProperties
-import ru.illine.openai.telegram.bot.service.openai.OpenAIService
+import ru.illine.openai.telegram.bot.config.property.GptProperties
+import ru.illine.openai.telegram.bot.service.openai.GptService
 import ru.illine.openai.telegram.bot.util.StringHelper
 import java.net.SocketTimeoutException
 
 @Service
-class OpenAIServiceImpl(
-    private val openAIProperties: OpenAIProperties,
+class Gpt4ServiceImpl(
+    private val gptProperties: GptProperties,
     private val openAi: OpenAiService
-) : OpenAIService {
+) : GptService {
 
     private val log = LoggerFactory.getLogger("SERVICE")
 
     override fun chat(question: String): Set<String> {
+        log.info("Calling the OpenAI API...")
         val completionRequest = buildOpenAIQuestion(question)
         try {
             return openAi
@@ -29,7 +30,6 @@ class OpenAIServiceImpl(
                 .map { it.content }
                 .toSet()
         } catch (e: Exception) {
-            log.error("Open AI returned an error!", e)
             throw when (e.cause) {
                 is SocketTimeoutException -> e.cause!!
                 else -> e
@@ -41,10 +41,13 @@ class OpenAIServiceImpl(
         return chat(question).joinToString(separator = StringHelper.DEFAULT_SEPARATOR)
     }
 
+    override fun getModel() = "gpt-4-0613"
+
     private fun buildOpenAIQuestion(question: String): ChatCompletionRequest {
         val completionRequest = ChatCompletionRequest.builder()
-            .model(openAIProperties.model)
-            .temperature(openAIProperties.temperature)
+            .model(getModel())
+            .temperature(gptProperties.temperature)
+            //ToDo Разобраться что за роль
             .messages(listOf(ChatMessage(ChatMessageRole.USER.value(), question)))
             .build()
         return completionRequest

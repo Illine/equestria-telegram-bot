@@ -11,12 +11,12 @@ import org.zalando.logbook.autoconfigure.LogbookAutoConfiguration
 import org.zalando.logbook.okhttp.GzipInterceptor
 import org.zalando.logbook.okhttp.LogbookInterceptor
 import retrofit2.Retrofit
-import ru.illine.openai.telegram.bot.config.property.OpenAIProperties
+import ru.illine.openai.telegram.bot.config.property.GptProperties
 import java.io.IOException
 
 @Configuration
 @Import(LogbookAutoConfiguration::class) // Spring 3 bug: https://github.com/zalando/logbook/issues/1344
-class OpenAIConfig(private val properties: OpenAIProperties) {
+class OpenAIConfig(private val properties: GptProperties) {
 
     @Bean
     fun objectMapper() = OpenAiService.defaultObjectMapper()

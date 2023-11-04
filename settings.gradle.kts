@@ -1,1 +1,1 @@
-rootProject.name = "openai-telegram-bot"
+rootProject.name = "equestria-telegram-bot"

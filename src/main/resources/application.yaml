@@ -1,4 +1,6 @@
 spring:
+  main:
+    allow-bean-definition-overriding: true
   jpa:
     hibernate:
       ddl-auto: none
@@ -6,7 +8,7 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         temp.use_jdbc_metadata_defaults: false
-        default_schema: openai_telegram_bot
+        default_schema: equestria_telegram_bot
     open-in-view: false
   data:
     jpa:
@@ -36,10 +38,9 @@ telegram:
   bot:
     token: ${TELEGRAM_BOT_TOKEN}
 
-openai:
+gpt:
   token: ${OPEN_AI_TOKEN}
-  model: gpt-3.5-turbo
-  temperature: ${OPEN_AI_TEMPERATURE:0.5}
+  temperature: ${OPEN_AI_TEMPERATURE:0.3}
   timeout-in-sec: ${OPEN_AI_TIMEOUT_IN_SEC:120}
   max-idle-connections: ${OPEN_AI_MAX_IDLE_CONNECTIONS:5}
   keep-alive-duration: ${OPEN_AI_KEEP_ALIVE_DURATION:5}
@@ -55,4 +56,4 @@ logbook:
     name: API
 
 async:
-  open-ai-pool-size: ${OPEN_AI_POOL_SIZE:3}
+  open-ai-pool-size: ${OPEN_AI_POOL_SIZE:5}

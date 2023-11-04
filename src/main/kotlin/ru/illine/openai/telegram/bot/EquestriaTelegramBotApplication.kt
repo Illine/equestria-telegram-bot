@@ -5,20 +5,20 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.runApplication
 import ru.illine.openai.telegram.bot.config.property.AsyncProperties
 import ru.illine.openai.telegram.bot.config.property.LogbookProperties
-import ru.illine.openai.telegram.bot.config.property.OpenAIProperties
+import ru.illine.openai.telegram.bot.config.property.GptProperties
 import ru.illine.openai.telegram.bot.config.property.TelegramBotProperties
 
 @EnableConfigurationProperties(
     *[
         TelegramBotProperties::class,
-        OpenAIProperties::class,
+        GptProperties::class,
         LogbookProperties::class,
         AsyncProperties::class
     ]
 )
 @SpringBootApplication
-class OpenaiTelegramBotApplication
+class EquestriaTelegramBotApplication
 
 fun main(args: Array<String>) {
-    runApplication<OpenaiTelegramBotApplication>(*args)
+    runApplication<EquestriaTelegramBotApplication>(*args)
 }

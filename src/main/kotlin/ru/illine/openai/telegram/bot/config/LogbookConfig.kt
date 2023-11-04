@@ -4,6 +4,7 @@ import ch.qos.logback.classic.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.context.annotation.Primary
 import org.zalando.logbook.Correlation
 import org.zalando.logbook.HttpLogWriter
 import org.zalando.logbook.Logbook

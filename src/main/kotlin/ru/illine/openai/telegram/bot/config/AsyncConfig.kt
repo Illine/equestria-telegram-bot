@@ -15,5 +15,5 @@ class AsyncConfig {
     fun openAIContext(properties: AsyncProperties) = Executors.newFixedThreadPool(properties.openAIPoolSize).asCoroutineDispatcher()
 
     @Bean
-    fun defaultCCoroutineScope(openAIContext: ExecutorCoroutineDispatcher) = CoroutineScope(openAIContext)
+    fun defaultCoroutineScope(openAIContext: ExecutorCoroutineDispatcher) = CoroutineScope(openAIContext)
 }
