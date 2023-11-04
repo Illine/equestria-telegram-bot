@@ -39,6 +39,7 @@ dependencies {
     implementation("com.theokanning.openai-gpt3-java:service:0.16.1")
     implementation("org.zalando:logbook-spring-boot-starter:3.6.0")
     implementation("org.zalando:logbook-okhttp:3.6.0")
+    implementation("org.zalando:logbook-httpclient:3.6.0")
     implementation("org.liquibase:liquibase-core:4.20.0")
     implementation("org.telegram:telegrambots:6.8.0")
 

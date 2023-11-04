@@ -23,23 +23,23 @@ class GptConfig(private val properties: GptProperties) {
 
     @Bean
     fun connectionPool(): ConnectionPool {
-        return ConnectionPool(properties.maxIdleConnections, properties.keepAliveDuration.toLong(), properties.timeUnit)
+        return ConnectionPool(properties.maxIdleConnections, properties.keepAliveInSec.toLong(), properties.timeUnit)
     }
 
     @Bean
-    fun openAiAuthenticationInterceptor() = OpenAIAuthenticationInterceptor(properties.token)
+    fun gptAuthenticationInterceptor() = GptAuthenticationInterceptor(properties.token)
 
     @Bean
     fun openAiOkHttpClient(
         connectionPool: ConnectionPool,
-        openAIAuthenticationInterceptor: OpenAIAuthenticationInterceptor,
-        logbookInterceptor: LogbookInterceptor,
-        gzipInterceptor: GzipInterceptor
+        gptAuthenticationInterceptor: GptAuthenticationInterceptor,
+        gptLogbookInterceptor: LogbookInterceptor,
+        gptGzipInterceptor: GzipInterceptor
     ): OkHttpClient {
         return OkHttpClient.Builder()
-            .addNetworkInterceptor(logbookInterceptor)
-            .addNetworkInterceptor(gzipInterceptor)
-            .addInterceptor(openAIAuthenticationInterceptor)
+            .addNetworkInterceptor(gptLogbookInterceptor)
+            .addNetworkInterceptor(gptGzipInterceptor)
+            .addInterceptor(gptAuthenticationInterceptor)
             .connectionPool(connectionPool)
             .readTimeout(properties.timeoutInSec.toLong(), properties.timeUnit)
             .build()
@@ -55,7 +55,7 @@ class GptConfig(private val properties: GptProperties) {
     @Bean
     fun openAi(openAiApi: OpenAiApi) = OpenAiService(openAiApi)
 
-    class OpenAIAuthenticationInterceptor internal constructor(private val token: String) : Interceptor {
+    class GptAuthenticationInterceptor internal constructor(private val token: String) : Interceptor {
 
         @Throws(IOException::class)
         override fun intercept(chain: Interceptor.Chain): Response {

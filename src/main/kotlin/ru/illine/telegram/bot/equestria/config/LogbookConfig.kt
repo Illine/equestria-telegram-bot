@@ -4,11 +4,12 @@ import ch.qos.logback.classic.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.context.annotation.Primary
 import org.zalando.logbook.Correlation
 import org.zalando.logbook.HttpLogWriter
 import org.zalando.logbook.Logbook
 import org.zalando.logbook.Precorrelation
+import org.zalando.logbook.httpclient.LogbookHttpRequestInterceptor
+import org.zalando.logbook.httpclient.LogbookHttpResponseInterceptor
 import org.zalando.logbook.okhttp.GzipInterceptor
 import org.zalando.logbook.okhttp.LogbookInterceptor
 import ru.illine.telegram.bot.equestria.config.property.LogbookProperties
@@ -17,10 +18,16 @@ import ru.illine.telegram.bot.equestria.config.property.LogbookProperties
 class LogbookConfig {
 
     @Bean
-    fun gzipInterceptor() = GzipInterceptor()
+    fun telegramLogbookRequestInterceptor(logbook: Logbook) = LogbookHttpRequestInterceptor(logbook)
 
     @Bean
-    fun logbookInterceptor(logbook: Logbook) = LogbookInterceptor(logbook)
+    fun telegramLogbookResponseInterceptor() = LogbookHttpResponseInterceptor()
+
+    @Bean
+    fun gptGzipInterceptor() = GzipInterceptor()
+
+    @Bean
+    fun gptLogbookInterceptor(logbook: Logbook) = LogbookInterceptor(logbook)
 
     @Bean
     fun writer(properties: LogbookProperties) = DefaultHttpLogWriter(properties)

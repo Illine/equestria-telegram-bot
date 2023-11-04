@@ -25,16 +25,16 @@ data class GptProperties(
     @Max(300)
     val timeoutInSec: Int,
 
-    @Min(2)
-    @Max(5)
-    val maxIdleConnections: Int,
-
     @Min(1)
     @Max(5)
-    val keepAliveDuration: Int,
+    val keepAliveInSec: Int,
 
     @NotNull
     val timeUnit: TimeUnit,
+
+    @Min(2)
+    @Max(5)
+    val maxIdleConnections: Int,
 
     @Min(3)
     @Max(10)

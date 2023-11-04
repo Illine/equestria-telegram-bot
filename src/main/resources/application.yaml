@@ -42,9 +42,9 @@ gpt:
   token: ${GPT_TOKEN}
   temperature: ${GPT_TEMPERATURE:0.3}
   timeout-in-sec: ${GPT_TIMEOUT_IN_SEC:120}
-  max-idle-connections: ${GPT_MAX_IDLE_CONNECTIONS:5}
-  keep-alive-duration: ${GPT_KEEP_ALIVE_DURATION:5}
+  keep-alive-in-sec: ${GPT_KEEP_ALIVE_DURATION:5}
   time-unit: ${GPT_AI_TIME_UNIT:seconds}
+  max-idle-connections: ${GPT_MAX_IDLE_CONNECTIONS:5}
   answer-history-count: ${GPT_ANSWER_HISTORY:5}
 
 logbook:
