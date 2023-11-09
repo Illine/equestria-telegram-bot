@@ -80,10 +80,10 @@ liquibase {
     activities.register("main") {
         this.arguments = mapOf(
             "changeLogFile" to properties.getOrDefault("changeLogFile", "$resourceDir/liquibase/changelog.yaml"),
-            "url" to properties.getOrDefault("url", "jdbc:postgresql://localhost:5432/equestria_telegram_bot"),
+            "url" to properties.getOrDefault("url", "jdbc:postgresql://localhost:5432/equestria"),
             "username" to properties.getOrDefault("username", "liquibase"),
             "password" to properties.getOrDefault("password", "liquibase"),
-            "defaultSchemaName" to properties.getOrDefault("schema", "equestria_telegram_bot"),
+            "defaultSchemaName" to properties.getOrDefault("schema", "equestria"),
             "contexts" to properties.getOrDefault("context", "local"),
             "logLevel" to properties.getOrDefault("logLevel", "info")
         )

@@ -8,7 +8,7 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         temp.use_jdbc_metadata_defaults: false
-        default_schema: equestria_telegram_bot
+        default_schema: equestria
     open-in-view: false
   data:
     jpa:
